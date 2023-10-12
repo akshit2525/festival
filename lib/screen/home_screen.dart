@@ -1,4 +1,5 @@
 import 'package:festival_app/models/category_model.dart';
+import 'package:festival_app/uttils/festival_model.dart';
 import 'package:flutter/material.dart';
 
 import '../uttils/global.dart';
@@ -11,13 +12,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void initState() {
+    super.initState();
+
+    Global.g1.imgList.map((e) {
+      FestivalModel f1 = FestivalModel.frommap(e);
+      Global.g1.modelList.add(f1);
+    }).toList();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text("Festival \n studio"),
+        backgroundColor: Colors.lightBlueAccent,
+        title: const Text("Festival studio"),
         centerTitle: true,
       ),
       body: GridView.builder(
@@ -42,7 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
       margin: EdgeInsets.all(8.0),
       child: InkWell(
         onTap: (){
-          Navigator.pushNamed(context, 'edit');
+          List<FestivalModel>l1=[];
+          Global.g1.festivalname=c1.name;
+          for(
+          var x in Global.g1.modelList){
+            if(x.name==c1.name){
+              l1.add(x);
+            }
+          }
+          Navigator.pushNamed(context, 'edit',arguments: l1);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
             Align(
